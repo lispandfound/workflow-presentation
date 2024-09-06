@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Workflow</title>
+<meta name="author" content="Jake Faulkner"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.css"/>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/theme/white.css" id="theme"/>
+
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'https://cdn.jsdelivr.net/npm/reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide"><h1 class="title">Workflow</h1><p class="subtitle">Creating a documented, tested, modular, best-in-class scientific workflow.</p>
+<p class="date">Created: 2024-09-06 Fri 15:46</p>
+</section>
+<section>
+<section id="slide-org777da74">
+<h2 id="org777da74">Current Workflow: Challenges</h2>
+<ul>
+<li>Poor documentation</li>
+<li>Brittle code with hacks</li>
+<li>Insufficient testing, hard to validate outputs</li>
+<li>Prone to breaking</li>
+<li>Inflexible, one-size-fits-all approach</li>
+
+</ul>
+</section>
+<section id="slide-org18bab09">
+<h3 id="org18bab09">Key Problem: One Workflow to Rule Them All</h3>
+<ul>
+<li>Over-reliance on Software team for tweaks</li>
+<li>High surface area for bugs</li>
+<li>Includes unnecessary features, complicates maintenance</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-orgf73401d">
+<h2 id="orgf73401d">New Workflow: Goals</h2>
+<ul>
+<li>Best-in-field scientific automation</li>
+<li>High standards of Software Engineering</li>
+<li>Comprehensive documentation</li>
+<li>Rigorous testing to scientific standards</li>
+<li>Adopts latest standards and languages</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-orge181bcf">
+<h2 id="orge181bcf">Documentation</h2>
+<ul>
+<li>High-level <a href="https://github.com/ucgmsim/workflow/wiki/Realisation-Proposal">rationale</a> and standards</li>
+<li>Of <a href="https://ucgmsim.github.io/workflow/workflow/scripts/generate_stoch.html">workflow stages</a>.</li>
+<li>Complete, researcher-friendly <a href="https://ucgmsim.github.io/workflow/workflow.html">code documentation</a>.</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-orgd4a25bd">
+<h2 id="orgd4a25bd">Testing</h2>
+<ul>
+<li>Hypothesis testing: automatic generation of 100's of test cases</li>
+<li>Unit testing: <a href="https://github.com/ucgmsim/velocity_modelling/blob/cylc/tests/test_bounding_box.py#L105">95%+ code coverage</a>, immediate feedback</li>
+<li>End-to-end workflow tests</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org0e49064">
+<h2 id="org0e49064">Modularity</h2>
+<ul>
+<li>Container-based: Reproducible, stable, latest scientific stack</li>
+<li>Script-based: Components can be reused for custom workflows, customisable</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-orgbb664f2">
+<h2 id="orgbb664f2">Cylc: Workflow Engine</h2>
+<ul>
+<li>Advanced monitoring tools</li>
+<li>NeSI support and community</li>
+<li>Designed to be easy to create workflows</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org516da2c">
+<h2 id="org516da2c">Running the new workflow</h2>
+<div class="org-src-container">
+
+<pre  class="src src-shell"   ><code trim>user@nesi $ <span style="color: #5B6268;"># </span><span style="color: #5B6268;">copies some files to inputs folder</span>
+user@nesi $ cylc install cybershake
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">or their own custom workflow!</span>
+user@nesi $ cylc play cybershake
+user@nesi $ cylc log cybershake <span style="color: #5B6268;"># </span><span style="color: #5B6268;">watch the workflow</span>
+</code></pre>
+</div>
+</section>
+<section id="slide-orgd233b2b">
+<h3 id="orgd233b2b">Notice</h3>
+<ul>
+<li>No environment management</li>
+<li>No complicated task config</li>
+<li>No slurm database locking</li>
+
+</ul>
+</section>
+<section id="slide-orgd8d94df">
+<h3 id="orgd8d94df">Shiny Monitoring Tools</h3>
+
+<div id="org86d99f6" class="figure">
+<p><img src="cylc-ui-dash.png" alt="cylc-ui-dash.png" />
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-org9133be9">
+<h2 id="org9133be9">Case Study: Cesar's Workflow</h2>
+<div class="outline-text-2" id="text-org9133be9">
+</div>
+</section>
+<section id="slide-orgd0715d9">
+<h3 id="orgd0715d9">The Problem</h3>
+<p>
+Cesar wants to run a simulation, where each realisation has two SRFs, only one modified.
+</p>
+</section>
+<section id="slide-org7672630">
+<h3 id="org7672630">Old Workflow</h3>
+<ol>
+<li>Struggle with where the code relevant to his experiment is</li>
+<li>Struggle to change this code because it is not written to be read</li>
+<li>Fight the workflow manager because it expects to be running Cybershake</li>
+
+</ol>
+</section>
+<section id="slide-orgc286f2f">
+<h3 id="orgc286f2f">New Workflow</h3>
+<ol>
+<li>Write his own SRF processor</li>
+<li>Copy the cylc flow, add his own stage in between</li>
+<li>Deploy to NeSI, go home early</li>
+
+</ol>
+</section>
+<section id="slide-orge93e7f2">
+<h3 id="orge93e7f2">New Workflow</h3>
+<ul>
+<li>High-level, <b>searchable documentation</b> available</li>
+<li>Scripts are reliable; <b>extensive testing</b> in place</li>
+<li>Researchers can build and deploy their own Cylc workflow <b>without needing to understand our code</b>.</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org8b7521a">
+<h2 id="org8b7521a">Current Status</h2>
+
+<div id="org9fb54f4" class="figure">
+<p><img src="flow.svg" alt="flow.svg" class="org-svg" />
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-org6778022">
+<h2 id="org6778022">Roadmap</h2>
+<ul>
+<li><b>WIP</b> Core hour usage monitoring</li>
+<li><b>WIP</b> New advanced visualisation tools</li>
+<li><b>WIP</b> Automated quality assurance</li>
+<li><b>WIP</b> Documentation automation</li>
+<li><b>WIP</b> Multi-segment simulations</li>
+<li><b>DONE</b> Enhanced scientific defaults</li>
+<li><b>DONE</b> Up to <b>2x</b> performance improvements</li>
+
+</ul>
+</section>
+</section>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'https://cdn.jsdelivr.net/npm/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'https://cdn.jsdelivr.net/npm/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'https://cdn.jsdelivr.net/npm/reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: 'https://cdn.jsdelivr.net/npm/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
+
+});
+
+</script>
+</body>
+</html>

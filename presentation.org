@@ -1,5 +1,5 @@
-#+title: Presenting: Workflow
-#+subtitle: Creating a documented, tested, modular, best-in-class scientific workflow.
+#+title: Workflow
+#+subtitle: pCreating a documented, tested, modular, best-in-class scientific workflow.
 #+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js
 #+REVEAL_THEME: white
 #+date:
@@ -18,19 +18,34 @@
   - High surface area for bugs
   - Includes unnecessary features, complicates maintenance
 
+** Notes                                                           :noexport:
+The current workflow has served well but has a number of
+limitations. It is very poorly documented. The code is very brittle
+and full of hacks. There are not enough tests and it is hard to
+validate output. The workflow management code is prone to
+breaking. The workflow is inflexible.
 * New Workflow: Goals
   - Best-in-field scientific automation
   - High standards of Software Engineering
   - Comprehensive documentation
   - Rigorous testing to scientific standards
   - Adopts latest standards and languages
+** Notes                                                           :noexport:
+The biggest problem by far is that the workflow must be the workflow
+for *everyone*. It is so hard to extend or change the workflow that
+everyone relies on the Software team to produce new workflow stages or
+tweaks to existing stages. This takes up our team when we could be
+improving tests, documentation or developing key new research tools.
+It also means the Cybershake workflow includes a lot of stuff we don't
+use, massively increasing the surface area for bugs.
+
 * Documentation
-  - High-level rationale and standards
-  - File formats and directory structure
-  - Complete, researcher-friendly code documentation
+  - High-level [[https://github.com/ucgmsim/workflow/wiki/Realisation-Proposal][rationale]] and standards
+  - Of [[https://ucgmsim.github.io/workflow/workflow/scripts/generate_stoch.html][workflow stages]].
+  - Complete, researcher-friendly [[https://ucgmsim.github.io/workflow/workflow.html][code documentation]].
 * Testing
   - Hypothesis testing: automatic generation of 100's of test cases
-  - Unit testing: 95%+ code coverage, immediate feedback
+  - Unit testing: [[https://github.com/ucgmsim/velocity_modelling/blob/cylc/tests/test_bounding_box.py#L105][95%+ code coverage]], immediate feedback
   - End-to-end workflow tests
 * Modularity
   - Container-based: Reproducible, stable, latest scientific stack
@@ -39,6 +54,14 @@
   - Advanced monitoring tools
   - NeSI support and community
   - Designed to be easy to create workflows
+** Notes                                                           :noexport:
+The old custom workflow manager is replaced by Cylc. Built at NeSI, designed for managed workflows in a completely modular way.
+
+1. Brilliant monitoring tools.
+2. Support from NeSI, adding yet another resource for researchers to get help.
+3. Constant updates and a community developing improvements for Cylc.
+4. Software team can contribute to Cylc and extend it for our needs, but without having to take on the responsibility of the whole codebase.
+
 * Running the new workflow
 #+begin_src shell
   user@nesi $ # copies some files to inputs folder
@@ -56,7 +79,7 @@
 * Case Study: Cesar's Workflow
 ** The Problem
 Cesar wants to run a simulation, where each realisation has two SRFs, only one modified.
-** Old Workflowi
+** Old Workflow
 1. Struggle with where the code relevant to his experiment is
 2. Struggle to change this code because it is not written to be read
 3. Fight the workflow manager because it expects to be running Cybershake
@@ -80,7 +103,7 @@ Cesar wants to run a simulation, where each realisation has two SRFs, only one m
 - Cesar uses the tools we give him to build his own cylc workflow and deploys that to NeSI, rather than trying to make our Cybershake workflow suit his needs.
 
 * Current Status
-#+begin_src mermaid :file flow.png
+#+begin_src mermaid :file flow.svg
   ---
   title: Implemented Workflow Stages
   ---
@@ -103,25 +126,25 @@ Cesar wants to run a simulation, where each realisation has two SRFs, only one m
       K --> L[Create Simulation Video]
 #+end_src
 
+** Notes                                                           :noexport:
+Mermaid diagram of the implemented stages of the workflow. Just IM Calc to go. We already have all previously described objectives covered for each stage:
+
+1. All stages are documented,
+2. All stages are tested with hypothesis or unit tests.,
+3. E2E testing to come.
+
+Modularity is already achieved.
+
+Cylc is already able to run a workflow entirely from realisation to output
 * Roadmap
-  - Core hour usage monitoring *WIP*
-  - New advanced visualisation tools *WIP*
-  - Automated quality assurance *WIP*
-  - Documentation automation *WIP*
-  - Enhanced scientific defaults *DONE*
-  - Multi-segment simulations *WIP*
-  - Up to *2x* performance improvements *DONE*
+  - *WIP* Core hour usage monitoring
+  - *WIP* New advanced visualisation tools
+  - *WIP* Automated quality assurance
+  - *WIP* Documentation automation
+  - *WIP* Multi-segment simulations
+  - *DONE* Enhanced scientific defaults
+  - *DONE* Up to *2x* performance improvements
 * Notes                                                            :noexport:
-** Current Workflow: Challenges and Limitations
-The current workflow has served well but has a number of limitations. It is very poorly documented. The code is very brittle and full of hacks. There are not enough tests and it is hard to validate output. The workflow management code is prone to breaking. The workflow is inflexible.
-** The Key Problem: One Workflow to Rule Them All
-The biggest problem by far is that the workflow must be the workflow
-for *everyone*. It is so hard to extend or change the workflow that
-everyone relies on the Software team to produce new workflow stages or
-tweaks to existing stages. This takes up our team when we could be
-improving tests, documentation or developing key new research tools.
-It also means the Cybershake workflow includes a lot of stuff we don't
-use, massively increasing the surface area for bugs.
 ** New Workflow: Aims
 The goals for the new workflow are nothing short of the best
 scientific automation workflow in the field. We want to empower
@@ -150,33 +173,5 @@ The old workflow was designed for cybershake but forced to accomodate everyone's
 
 1. Container based workflow. Completely reproducible, already setup for researchers to use, no more environment management.
 2. Workflow a series of scripts. Completely transparent and designed to run independent of other scripts. Old workflow had lots of assumptions about simulation folder structure and the way simulations had to be executed. Build your own workflow for your needs.
-** Cylc: The Engine of Workflow
-The old custom workflow manager is replaced by Cylc. Built at NeSI, designed for managed workflows in a completely modular way.
-
-1. Brilliant monitoring tools.
-2. Support from NeSI, adding yet another resource for researchers to get help.
-3. Constant updates and a community developing improvements for Cylc.
-4. Software team can contribute to Cylc and extend it for our needs, but without having to take on the responsibility of the whole codebase.
 ** Case Study
 This will be a case study of how Cesar is using the old workflow and how the new workflow will solve his problems.
-** Current Status
-Mermaid diagram of the implemented stages of the workflow. Just IM Calc to go. We already have all previously described objectives covered for each stage:
-
-1. All stages are documented,
-2. All stages are tested with hypothesis or unit tests.,
-3. E2E testing to come.
-
-Modularity is already achieved.
-
-Cylc is already able to run a workflow entirely from realisation to output
-** Future Roadmap
-
-So much stuff is being brought to bear that is not able to be discussed here:
-
-1. NSA-level surveillance of workflow run times,
-2. Automated testing and linting tools to ensure code quality,
-3. Automated documentation deployment,
-4. Juiced up scientific defaults,
-5. Unified realisation format,
-6. Multi-segment rupture simulation,
-7. Up to *2x* performance improvements for all workflow stages except EMOD3D
