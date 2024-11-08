@@ -1,5 +1,5 @@
 #+title: Workflow
-#+subtitle: pCreating a documented, tested, modular, best-in-class scientific workflow.
+#+subtitle: Creating a documented, tested, modular, best-in-class scientific workflow.
 #+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js
 #+REVEAL_THEME: white
 #+date:
@@ -40,9 +40,9 @@ It also means the Cybershake workflow includes a lot of stuff we don't
 use, massively increasing the surface area for bugs.
 
 * Documentation
-  - High-level [[https://github.com/ucgmsim/workflow/wiki/Realisation-Proposal][rationale]] and standards
-  - Of [[https://ucgmsim.github.io/workflow/workflow/scripts/generate_stoch.html][workflow stages]].
-  - Complete, researcher-friendly [[https://ucgmsim.github.io/workflow/workflow.html][code documentation]].
+  - High-level [[https://github.com/ucgmsim/workflow/wiki/Realisation-Proposal][rationale]] and standards.
+  - Complete documentation of [[https://ucgmsim.github.io/workflow/workflow/scripts/generate_stoch.html][workflow stages]].
+  - Complete, researcher-friendly [[https://ucgmsim.github.io/workflow/workflow.html][source code documentation]].
 * Testing
   - Hypothesis testing: automatic generation of 100's of test cases
   - Unit testing: [[https://github.com/ucgmsim/velocity_modelling/blob/cylc/tests/test_bounding_box.py#L105][95%+ code coverage]], immediate feedback
@@ -55,43 +55,53 @@ use, massively increasing the surface area for bugs.
   - NeSI support and community
   - Designed to be easy to create workflows
 ** Notes                                                           :noexport:
-The old custom workflow manager is replaced by Cylc. Built at NeSI, designed for managed workflows in a completely modular way.
+The old custom workflow manager is replaced by Cylc. Built at NIWA, designed for managed workflows in a completely modular way.
 
 1. Brilliant monitoring tools.
-2. Support from NeSI, adding yet another resource for researchers to get help.
+2. Support from NIWA, adding yet another resource for researchers to get help.
 3. Constant updates and a community developing improvements for Cylc.
 4. Software team can contribute to Cylc and extend it for our needs, but without having to take on the responsibility of the whole codebase.
 
-* Running the new workflow
-#+begin_src shell
-  user@nesi $ # copies some files to inputs folder
-  user@nesi $ cylc install cybershake
-  # or their own custom workflow!
-  user@nesi $ cylc play cybershake
-  user@nesi $ cylc log cybershake # watch the workflow
-#+end_src
-** Notice
-- No environment management
-- No complicated task config
-- No slurm database locking
+
 ** Shiny Monitoring Tools
 [[file:cylc-ui-dash.png]]
 * Case Study: Cesar's Workflow
 ** The Problem
 Cesar wants to run a simulation, where each realisation has two SRFs, only one modified.
 ** Old Workflow
-1. Struggle with where the code relevant to his experiment is
-2. Struggle to change this code because it is not written to be read
-3. Fight the workflow manager because it expects to be running Cybershake
+1. Struggle with where the code relevant to his experiment is,
+2. Struggle to change this code because it is not written to be read,
+3. Fight the workflow manager because it expects to be running Cybershake.
 ** New Workflow
 1. Write his own SRF processor
-2. Copy the cylc flow, add his own stage in between
+2. Plan a new workflow using the workflow planning tool.
 3. Deploy to NeSI, go home early
 
 ** New Workflow
 - High-level, *searchable documentation* available
 - Scripts are reliable; *extensive testing* in place
 - Researchers can build and deploy their own Cylc workflow *without needing to understand our code*.
+** Notice
+- No environment management
+- No complicated task config
+- No slurm database locking
+* Demo: GCMT Simulations on Hypocentre
+
+* Errata
+
+- Industry standard scientific outputs (HDF5 for waveforms).
+- Near real-time simulations of GCMT solutions.
+- Fast adoption of the new RCC cluster.
+- Support for upcoming Genoa nodes (50% than NeSI Milan nodes, 3x faster than Maui).
+- Consolidated scientific defaults.
+** Roadmap
+- *WIP* Simple archiving solution with automatic Dropbox upload.
+- *WIP* Core hour usage monitoring.
+- *WIP* New advanced visualisation tools.
+- *WIP* Automated quality assurance.
+- *WIP* Documentation automation.
+- *WIP* Multi-segment simulations.
+
 ** Notes                                                           :noexport:
 *** Old Workflow
 - Cesar needs our help to navigate the codebase because there is no documentation.
@@ -102,29 +112,6 @@ Cesar wants to run a simulation, where each realisation has two SRFs, only one m
 - The scripts do what they say they do and the extensive testing means bugs he would find were found in the tests.
 - Cesar uses the tools we give him to build his own cylc workflow and deploys that to NeSI, rather than trying to make our Cybershake workflow suit his needs.
 
-* Current Status
-#+begin_src mermaid :file flow.svg
-  ---
-  title: Implemented Workflow Stages
-  ---
-  flowchart LR
-      A[NSHM To Realisation] --> B[SRF Generation]
-      A --> C[Domain Generation]
-      B --> D[Stoch Generation]
-      C --> E[Velocity Model Generation]
-      C --> F[Station Selection]
-      C --> G[Write Model Coordinates]
-      B --> H[Create EMOD3D Parameters]
-      E --> H
-      F --> H
-      G --> H
-      H --> I[EMOD3D]
-      D --> J[High Frequency Simulation]
-      I --> M[Broadband Simulation]
-      J --> M
-      I -->|Optionally| K[Merge Timeslices]
-      K --> L[Create Simulation Video]
-#+end_src
 
 ** Notes                                                           :noexport:
 Mermaid diagram of the implemented stages of the workflow. Just IM Calc to go. We already have all previously described objectives covered for each stage:
@@ -136,14 +123,6 @@ Mermaid diagram of the implemented stages of the workflow. Just IM Calc to go. W
 Modularity is already achieved.
 
 Cylc is already able to run a workflow entirely from realisation to output
-* Roadmap
-  - *WIP* Core hour usage monitoring
-  - *WIP* New advanced visualisation tools
-  - *WIP* Automated quality assurance
-  - *WIP* Documentation automation
-  - *WIP* Multi-segment simulations
-  - *DONE* Enhanced scientific defaults
-  - *DONE* Up to *2x* performance improvements
 * Notes                                                            :noexport:
 ** New Workflow: Aims
 The goals for the new workflow are nothing short of the best
